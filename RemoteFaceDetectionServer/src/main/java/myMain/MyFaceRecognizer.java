@@ -1,3 +1,4 @@
+
 package myMain;
 
 
@@ -21,13 +22,13 @@ import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 
-public class OpenCVFaceRecognizer {
-    public static void main(String[] args) {
-        String trainingDir = "C:\\inputPictures";
-        Mat testImage = imread("inputPictures/testInput.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-
+public class MyFaceRecognizer {
+   
+	FaceRecognizer faceRecognizer;
+	
+	public MyFaceRecognizer() {
+        String trainingDir = "C:\\trainingPictures";
         
-        System.out.println(testImage.cols());
         File root = new File(trainingDir);
 
         FilenameFilter imgFilter = new FilenameFilter() {
@@ -51,7 +52,7 @@ public class OpenCVFaceRecognizer {
             Mat img = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
             
             int label = Integer.parseInt(image.getName().split("\\-")[0]);
-            System.out.println(label);
+            System.out.println("Label: " + label);
             images.put(counter, img);
 
             labelsBuf.put(counter, label);
@@ -59,17 +60,29 @@ public class OpenCVFaceRecognizer {
             counter++;
         }
 
-        FaceRecognizer faceRecognizer = createFisherFaceRecognizer();
+        faceRecognizer = createFisherFaceRecognizer();
         // FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
         // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer()
         System.out.println("start training");
         faceRecognizer.train(images, labels);
         System.out.println("done training");
+
+        
+    }
+	
+	
+	public int recognizeFace(String path){
+
+		System.out.println("recognizeFace called");
         IntPointer label = new IntPointer(1);
         DoublePointer confidence = new DoublePointer(1);
+		Mat testImage = imread(path, CV_LOAD_IMAGE_GRAYSCALE);
         faceRecognizer.predict(testImage, label, confidence);
         int predictedLabel = label.get(0);
 
-        System.out.println("Predicted label: " + predictedLabel + "confidence: " + confidence.get());
-    }
+        System.out.println("Predicted label: " + predictedLabel + " confidence: " + confidence.get());
+
+		
+		return predictedLabel;
+	}
 }

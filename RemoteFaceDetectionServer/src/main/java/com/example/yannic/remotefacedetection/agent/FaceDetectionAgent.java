@@ -8,6 +8,7 @@ import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +33,9 @@ import jadex.bridge.IInternalAccess;
 import jadex.bridge.service.annotation.Service;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
-
+import jadex.commons.future.Tuple2Future;
 import jadex.micro.annotation.*;
+import myMain.MyFaceRecognizer;
 
 @Description("Agent zur Ausführund der face detection")
 @Agent
@@ -43,21 +45,23 @@ public class FaceDetectionAgent implements FaceDetectionService{
 
 	
 	CascadeClassifier mCascadeClassifier;
-	
+	MyFaceRecognizer mFaceRecognizer;
 	@AgentBody
 	public IFuture<Void> executeBody(IInternalAccess ia){
 		
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		mCascadeClassifier = new CascadeClassifier(FaceDetectionAgent.class.getResource("lbpcascade_frontalface.xml").getPath().substring(1));
 		
-		
+		mFaceRecognizer = new MyFaceRecognizer();
 		
 		
 		return new Future<Void>();
 	}
 	
 	int num =0;
-	
+
+
+	//string übertragung zum testen der verbindung
 	@Override
 	public String test(){
 		num++;
@@ -65,84 +69,96 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		return "String form PC Platform" + num;
 	}
 
+
+	int count = 0;			 
 	
+	//gibt den Rahmen um die gesichter zurück
 	@Override
-	public Future<List<Integer>> getFrame(int height, int width, byte[] input) {
+	public Tuple2Future<List<Integer>, byte[]> getFrame(int id, byte[] input) {
 		
 		
-		
-		System.out.println("" + input.length);
+		Tuple2Future<List<Integer>, byte[]> fut = new Tuple2Future<List<Integer>, byte[]>();
+
+		System.out.println("input lenght: " + input.length);
 		String testRect = "";
 		List<Integer> rectData = new ArrayList<Integer>() ;
+		byte[] thumbnail = new byte[0];
+		BufferedImage bi;
+		int label = 0;
 		try {
-			BufferedImage bi = ImageIO.read(new ByteArrayInputStream(input));
-//			
-//			Mat mat = new Mat(height, width, CvType.CV_8UC4);
-//	     	mat.put(0,0,input);
-//	
+			bi = ImageIO.read(new ByteArrayInputStream(input));
+
 			
 			Mat mat = bufferedImageToMat(bi);
 	     	
 	    	MatOfRect faces = new MatOfRect();
 			if (mCascadeClassifier != null){
-				mCascadeClassifier.detectMultiScale(mat, faces, 1.1, 2, 2, new Size(200,200), new Size());
+				mCascadeClassifier.detectMultiScale(mat, faces, 1.1, 2, 2, new Size(50,50), new Size());
 				
 			}
-			System.out.println("face detection was called width: "+ mat.width() + "height: " + mat.height());
+			System.out.println("face detection was called id: "+ id);
 			
 			
 			
 			Rect[] facesArray = faces.toArray();
 			
+
+	            
+	    		for(Rect face : facesArray){
+	    			
+//	    			testRect = testRect + "height: " + face.height;
+//	    			testRect = testRect + "width: " + face.width;
+//	    			testRect = testRect + "x: " + face.x;
+//	    			testRect = testRect + "y: " + face.y;
+//	    		
+//	    			
+	    			rectData.add(face.x);
+	    			rectData.add(face.y);
+	    			rectData.add(face.width);
+	    			rectData.add(face.height);
+	 
+	    			/*
+	    			 * testen was wieviel zeit kostet
+	    			 */
+	    			//Mat cropImg = new Mat(mat, face);
+	    			//Mat resizedImg = new Mat();
+	    			//Size size = new Size(500,500);
+	    			//Imgproc.resize(cropImg, resizedImg, size);
+	    			//bi = matToBufferedImage(resizedImg, bi);
+	    			//ImageIO.write(bi, "jpg", new File("C:\\inputPictures\\" + count +"-test.jpg"));
+	    			
+	    			//label = mFaceRecognizer.recognizeFace("C:\\inputPictures\\"+ count +"-test.jpg");
+	    			count++;
+	    			}
+	    		System.out.println(rectData.toString());
+	    		List<Integer> testList = new ArrayList<>();
+	    		testList.add(id);
+	    		testList.add(id);
+	    		testList.add(id);
+	    		testList.add(id);
+	    		fut.setFirstResult(rectData);
+	    		//thumbnail = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());
+    			//System.out.println("bytes: " + thumbnail.length);
+    		
 			
+	    		//zeichnet rects ein
+	    		/*
             for (int i = 0; i < facesArray.length; i++)
                 Imgproc.rectangle(mat, facesArray[i].tl(),
                         facesArray[i].br(), new Scalar(100), 3);
             
-        
-            int count =0;
-            
-    		for(Rect face : facesArray){
-    			testRect = testRect + "height: " + face.height;
-    			testRect = testRect + "width: " + face.width;
-    			testRect = testRect + "x: " + face.x;
-    			testRect = testRect + "y: " + face.y;
-    		
-    			
-    			rectData.add(face.x);
-    			rectData.add(face.y);
-    			rectData.add(face.width);
-    			rectData.add(face.height);
-    			
-    			Mat cropImg = new Mat(mat, face);
-    			Mat resizedImg = new Mat();
-    			Size size = new Size(500,500);
-    			Imgproc.resize(cropImg, resizedImg, size);
-    			bi = matToBufferedImage(resizedImg, bi);
-    			ImageIO.write(bi, "jpg", new File("C:\\test\\" + count +"-test.jpg"));
-    			count++;
-    			
-    		}
-    		System.out.println(rectData.toString());
-            
+	    		 	*/
+               
             
 	     	
 	     
 			
 		} catch (IOException e) {
 			System.out.println("IOException beim umwandeln des byteArray");
-		}
+		}	
 		
-		
-	
-		
-		// bild oder Rect data zurück geben?
-		//string zum testen..
-			
-		
-		
-		
-		return new Future<List<Integer>>(rectData);
+		fut.setSecondResult(thumbnail);
+		return fut;
 	}
 	
 	public BufferedImage matToBufferedImage(Mat matrix, BufferedImage bimg)
