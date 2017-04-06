@@ -68,20 +68,18 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		System.out.println("String was requested");
 		return "String form PC Platform" + num;
 	}
-
-
-	int count = 0;			 
 	
 	//gibt den Rahmen um die gesichter zurück
 	@Override
 	public Tuple2Future<List<Integer>, byte[]> getFrame(int id, byte[] input) {
-		
+
+
+		long startTime = System.currentTimeMillis();
 		
 		Tuple2Future<List<Integer>, byte[]> fut = new Tuple2Future<List<Integer>, byte[]>();
-
-		System.out.println("input lenght: " + input.length);
-		String testRect = "";
+		int count = 1;
 		List<Integer> rectData = new ArrayList<Integer>() ;
+		rectData.add(id);
 		byte[] thumbnail = new byte[0];
 		BufferedImage bi;
 		int label = 0;
@@ -93,7 +91,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	     	
 	    	MatOfRect faces = new MatOfRect();
 			if (mCascadeClassifier != null){
-				mCascadeClassifier.detectMultiScale(mat, faces, 1.1, 2, 2, new Size(50,50), new Size());
+				mCascadeClassifier.detectMultiScale(mat, faces, 1.1, 2, 2, new Size(100,100), new Size());
 				
 			}
 			System.out.println("face detection was called id: "+ id);
@@ -117,28 +115,28 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	    			rectData.add(face.width);
 	    			rectData.add(face.height);
 	 
-	    			/*
-	    			 * testen was wieviel zeit kostet
-	    			 */
-	    			//Mat cropImg = new Mat(mat, face);
-	    			//Mat resizedImg = new Mat();
-	    			//Size size = new Size(500,500);
-	    			//Imgproc.resize(cropImg, resizedImg, size);
-	    			//bi = matToBufferedImage(resizedImg, bi);
-	    			//ImageIO.write(bi, "jpg", new File("C:\\inputPictures\\" + count +"-test.jpg"));
-	    			
-	    			//label = mFaceRecognizer.recognizeFace("C:\\inputPictures\\"+ count +"-test.jpg");
-	    			count++;
 	    			}
-	    		System.out.println(rectData.toString());
-	    		List<Integer> testList = new ArrayList<>();
-	    		testList.add(id);
-	    		testList.add(id);
-	    		testList.add(id);
-	    		testList.add(id);
+	    	
 	    		fut.setFirstResult(rectData);
-	    		//thumbnail = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());
+	    		
+	    		for(Rect face : facesArray){
+	    		/*
+    			 * testen was wieviel zeit kostet
+    			 */
+    			Mat cropImg = new Mat(mat, face);
+    			Mat resizedImg = new Mat();
+    			Size size = new Size(500,500);
+    			Imgproc.resize(cropImg, resizedImg, size);
+    			bi = matToBufferedImage(resizedImg, bi);
+    			ImageIO.write(bi, "jpg", new File("C:\\inputPictures\\" + count +"-test.jpg"));
+    			
+    			label = mFaceRecognizer.recognizeFace("C:\\inputPictures\\"+ count +"-test.jpg");
+    			count++;
+	    		}
+	    		if(label>0){
+	    		thumbnail = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());
     			//System.out.println("bytes: " + thumbnail.length);
+	    		}
     		
 			
 	    		//zeichnet rects ein
@@ -158,6 +156,8 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		}	
 		
 		fut.setSecondResult(thumbnail);
+		long endTime = System.currentTimeMillis();
+		System.out.println("Dauer: " + (endTime-startTime) + " milliseconds");
 		return fut;
 	}
 	
