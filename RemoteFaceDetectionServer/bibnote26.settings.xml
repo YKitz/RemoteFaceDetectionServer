@@ -5,9 +5,19 @@
 		<p0:property __ID="3" type="autocreate">true</p0:property>
 		<p0:property __ID="4" type="autodelete">true</p0:property>
 	</p0:properties>
-	<p0:properties __ID="5" type="StarterServicePanel">
-		<p0:properties __ID="6" type="mpanel">
-			<p0:property __ID="7" type="tree"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+	<p0:properties __ID="5" type="awa@bibnote26_e50">
+		<p0:property __ID="6" type="fast">false</p0:property>
+		<p0:property __ID="7" type="autocreate">true</p0:property>
+		<p0:property __ID="8" type="autodelete">true</p0:property>
+	</p0:properties>
+	<p0:properties __ID="9" type="awa@bibnote26_599">
+		<p0:property __ID="10" type="fast">false</p0:property>
+		<p0:property __ID="11" type="autocreate">true</p0:property>
+		<p0:property __ID="12" type="autodelete">true</p0:property>
+	</p0:properties>
+	<p0:properties __ID="13" type="StarterServicePanel">
+		<p0:properties __ID="14" type="mpanel">
+			<p0:property __ID="15" type="tree"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <p0:TreeProperties xmlns:p0="typeinfo:jadex.base.gui.filetree" __ID="0">
 	<expandedNodes>
 		<p0:NodePath__1 __ID="1" __len="0"></p0:NodePath__1>
@@ -17,49 +27,49 @@
 	</rootPathEntries>
 </p0:TreeProperties>
 ]]></p0:property>
-			<p0:properties __ID="8" type="mic">
-				<p0:property __ID="9" type="Micro Agent">true</p0:property>
+			<p0:properties __ID="16" type="mic">
+				<p0:property __ID="17" type="Micro Agent">true</p0:property>
 			</p0:properties>
 		</p0:properties>
-		<p0:properties __ID="10" type="spanel">
-			<p0:property __ID="11" type="startsuspended">false</p0:property>
-			<p0:property __ID="12" type="autogenerate">false</p0:property>
-			<p0:property __ID="13" type="number">1</p0:property>
-			<p0:property __ID="14" type="name"></p0:property>
+		<p0:properties __ID="18" type="spanel">
+			<p0:property __ID="19" type="startsuspended">false</p0:property>
+			<p0:property __ID="20" type="autogenerate">false</p0:property>
+			<p0:property __ID="21" type="number">1</p0:property>
+			<p0:property __ID="22" type="name"></p0:property>
 		</p0:properties>
 	</p0:properties>
-	<p0:properties __ID="15" type="clockservice">
-		<p0:property __ID="16" type="type">system</p0:property>
-		<p0:property __ID="17" type="delta">100</p0:property>
-		<p0:property __ID="18" type="dilation">1.0</p0:property>
+	<p0:properties __ID="23" type="clockservice">
+		<p0:property __ID="24" type="type">system</p0:property>
+		<p0:property __ID="25" type="delta">100</p0:property>
+		<p0:property __ID="26" type="dilation">1.0</p0:property>
 	</p0:properties>
-	<p0:properties __ID="19" type="simulationservice">
-		<p0:property __ID="20" type="executing">true</p0:property>
+	<p0:properties __ID="27" type="simulationservice">
+		<p0:property __ID="28" type="executing">true</p0:property>
 	</p0:properties>
-	<p0:properties __ID="21" type="chat">
-		<p0:property __ID="22" type="nickname">user_941</p0:property>
+	<p0:properties __ID="29" type="chat">
+		<p0:property __ID="30" type="nickname">user_941</p0:property>
 	</p0:properties>
-	<p0:properties __ID="23" type="awa@bibnote26_e50">
-		<p0:property __ID="24" type="fast">false</p0:property>
-		<p0:property __ID="25" type="autocreate">true</p0:property>
-		<p0:property __ID="26" type="autodelete">true</p0:property>
+	<p0:properties __ID="31" type="awa@bibnote26_097">
+		<p0:property __ID="32" type="fast">false</p0:property>
+		<p0:property __ID="33" type="autocreate">true</p0:property>
+		<p0:property __ID="34" type="autodelete">true</p0:property>
 	</p0:properties>
-	<p0:properties __ID="27" type="securityservice">
-		<p0:property __ID="28" type="validityduration">327680</p0:property>
-		<p0:property __ID="29" type="usepass">true</p0:property>
-		<p0:property __ID="30" type="password">91553712-1a7</p0:property>
-		<p0:property __ID="31" type="selected_mechanism">0</p0:property>
-		<p0:property __ID="32" type="networks" name="OpenCVTestNetwork">testpw</p0:property>
-		<p0:property __ID="33" type="trustedlan">false</p0:property>
-		<p0:property __ID="34" type="storepath">./keystore</p0:property>
-		<p0:property __ID="35" type="storepass">keystore</p0:property>
-		<p0:property __ID="36" type="keypass">keystore</p0:property>
-		<p0:property __ID="37" type="selmech">0</p0:property>
-		<p0:properties __ID="38" type="DecentralizedAcquisitionMechanism">
-			<p0:property __ID="39" type="responses">1</p0:property>
+	<p0:properties __ID="35" type="securityservice">
+		<p0:property __ID="36" type="validityduration">327680</p0:property>
+		<p0:property __ID="37" type="usepass">true</p0:property>
+		<p0:property __ID="38" type="password">91553712-1a7</p0:property>
+		<p0:property __ID="39" type="selected_mechanism">0</p0:property>
+		<p0:property __ID="40" type="networks" name="OpenCVTestNetwork">testpw</p0:property>
+		<p0:property __ID="41" type="trustedlan">false</p0:property>
+		<p0:property __ID="42" type="storepath">./keystore</p0:property>
+		<p0:property __ID="43" type="storepass">keystore</p0:property>
+		<p0:property __ID="44" type="keypass">keystore</p0:property>
+		<p0:property __ID="45" type="selmech">0</p0:property>
+		<p0:properties __ID="46" type="DecentralizedAcquisitionMechanism">
+			<p0:property __ID="47" type="responses">1</p0:property>
 		</p0:properties>
-		<p0:properties __ID="40" type="TTPAcquisitionMechanism">
-			<p0:property __ID="41" type="verify">true</p0:property>
+		<p0:properties __ID="48" type="TTPAcquisitionMechanism">
+			<p0:property __ID="49" type="verify">true</p0:property>
 		</p0:properties>
 	</p0:properties>
 </p0:properties>

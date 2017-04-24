@@ -85,6 +85,8 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		int label = 0;
 		try {
 			bi = ImageIO.read(new ByteArrayInputStream(input));
+			//ImageIO.write(bi, "jpg", new File("C:\\test\\test.jpg"));
+			
 
 			
 			Mat mat = bufferedImageToMat(bi);
@@ -118,11 +120,14 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	    			}
 	    	
 	    		fut.setFirstResult(rectData);
-	    		
-	    		for(Rect face : facesArray){
+	    		long fendTime = System.currentTimeMillis();
+	    		System.out.println("Dauer first Result: " + (fendTime-startTime) + " milliseconds");	
+	    		//for(Rect face : facesArray){
 	    		/*
     			 * testen was wieviel zeit kostet
     			 */
+	    		if(facesArray.length>0){
+	    		Rect face = facesArray[0];
     			Mat cropImg = new Mat(mat, face);
     			Mat resizedImg = new Mat();
     			Size size = new Size(500,500);
@@ -133,6 +138,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
     			label = mFaceRecognizer.recognizeFace("C:\\inputPictures\\"+ count +"-test.jpg");
     			count++;
 	    		}
+	    		//}
 	    		if(label>0){
 	    		thumbnail = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());
     			//System.out.println("bytes: " + thumbnail.length);
@@ -157,7 +163,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		
 		fut.setSecondResult(thumbnail);
 		long endTime = System.currentTimeMillis();
-		System.out.println("Dauer: " + (endTime-startTime) + " milliseconds");
+		System.out.println("Dauer second Result: " + (endTime-startTime) + " milliseconds");
 		return fut;
 	}
 	

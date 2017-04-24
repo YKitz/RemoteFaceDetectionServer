@@ -34,7 +34,7 @@ public class MyFaceRecognizer {
         FilenameFilter imgFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 name = name.toLowerCase();
-                return name.endsWith(".jpg") || name.endsWith(".pgm") || name.endsWith(".png");
+                return name.endsWith(".jpg") ;
             }
         };
 
@@ -64,9 +64,13 @@ public class MyFaceRecognizer {
         // FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
         // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer()
         System.out.println("start training");
+        long startTime = System.currentTimeMillis();
+		
         faceRecognizer.train(images, labels);
-        System.out.println("done training");
-
+        long endTime = System.currentTimeMillis();
+		
+         System.out.println("Training finished: " + (endTime-startTime) + " milliseconds");	
+		
         
     }
 	
