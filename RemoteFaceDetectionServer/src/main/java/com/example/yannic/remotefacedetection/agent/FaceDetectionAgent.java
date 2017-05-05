@@ -69,7 +69,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		return "String form PC Platform" + num;
 	}
 	
-	//gibt den Rahmen um die gesichter zurück
+	//gibt den Rahmen um die gesichter und ein erkanntes ähnliches gesicht zurück
 	@Override
 	public Tuple2Future<List<Integer>, byte[]> getFrame(int id, byte[] input) {
 
@@ -85,7 +85,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		int label = 0;
 		try {
 			bi = ImageIO.read(new ByteArrayInputStream(input));
-			//ImageIO.write(bi, "jpg", new File("C:\\test\\test.jpg"));
+			ImageIO.write(bi, "jpg", new File("C:\\test\\test.jpg"));
 			
 
 			
@@ -124,7 +124,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	    		System.out.println("Dauer first Result: " + (fendTime-startTime) + " milliseconds");	
 	    		//for(Rect face : facesArray){
 	    		/*
-    			 * testen was wieviel zeit kostet
+    			 * prep for recognition
     			 */
 	    		if(facesArray.length>0){
 	    		Rect face = facesArray[0];
@@ -156,16 +156,59 @@ public class FaceDetectionAgent implements FaceDetectionService{
             
 	     	
 	     
-			
+
+	    		fut.setSecondResult(thumbnail);	
 		} catch (IOException e) {
 			System.out.println("IOException beim umwandeln des byteArray");
 		}	
 		
-		fut.setSecondResult(thumbnail);
 		long endTime = System.currentTimeMillis();
 		System.out.println("Dauer second Result: " + (endTime-startTime) + " milliseconds");
 		return fut;
+	}	
+	int c=0;
+	
+	/*
+	 * face recognition bei lokaler detection
+	 */
+	public Future<byte[]> recognizeFace(byte[] inputFace){
+		byte[] recognizedFace = new byte[0];
+		
+		BufferedImage bi;
+		try {
+		bi = ImageIO.read(new ByteArrayInputStream(inputFace));
+		
+		
+		Mat input = bufferedImageToMat(bi);
+		
+		
+		Mat resizedImg = new Mat();
+		Size size = new Size(500,500);
+		Imgproc.resize(input, resizedImg, size);
+		bi = matToBufferedImage(resizedImg, bi);
+		ImageIO.write(bi, "jpg", new File("C:\\inputPicturesFace\\" + c +"-test.jpg"));
+		
+		int label = mFaceRecognizer.recognizeFace("C:\\inputPicturesFace\\"+ c +"-test.jpg");
+		
+		c++;
+		recognizedFace = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return new Future<byte[]>(recognizedFace); 
 	}
+	
+	
+	
+	public static Mat bufferedImageToMat(BufferedImage bi) {
+		  Mat mat = new Mat(bi.getHeight(), bi.getWidth(), CvType.CV_8UC3);
+		  byte[] data = ((DataBufferByte) bi.getRaster().getDataBuffer()).getData();
+		  mat.put(0, 0, data);
+		  return mat;
+		}
+
+
 	
 	public BufferedImage matToBufferedImage(Mat matrix, BufferedImage bimg)
 	{
@@ -204,14 +247,5 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	    }
 	    return bimg;  
 	}   
-	
-	
-	
-	public static Mat bufferedImageToMat(BufferedImage bi) {
-		  Mat mat = new Mat(bi.getHeight(), bi.getWidth(), CvType.CV_8UC3);
-		  byte[] data = ((DataBufferByte) bi.getRaster().getDataBuffer()).getData();
-		  mat.put(0, 0, data);
-		  return mat;
-		}
 
 }

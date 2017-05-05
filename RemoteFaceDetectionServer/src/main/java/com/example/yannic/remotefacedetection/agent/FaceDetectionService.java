@@ -18,5 +18,7 @@ public interface FaceDetectionService {
 	
 	Tuple2Future<List<Integer>, byte[]> getFrame(int id, byte[] data);
 	
+	Future<byte[]> recognizeFace(byte[] inputFace);
+	
 	
 }
