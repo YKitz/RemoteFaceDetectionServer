@@ -127,6 +127,8 @@ public class FaceDetectionAgent implements FaceDetectionService{
     			 * prep for recognition
     			 */
 	    		if(facesArray.length>0){
+	    		
+	    			for(int i = 0; i < facesArray.length; i++){
 	    		Rect face = facesArray[0];
     			Mat cropImg = new Mat(mat, face);
     			Mat resizedImg = new Mat();
@@ -137,14 +139,23 @@ public class FaceDetectionAgent implements FaceDetectionService{
     			
     			label = mFaceRecognizer.recognizeFace("C:\\inputPictures\\"+ count +"-test.jpg");
     			count++;
-	    		}
+	    		
 	    		//}
 	    		if(label>0){
-	    		thumbnail = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());
+	    			
+	    		byte[] tempface = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());	
+	    		byte[] combined = new byte[tempface.length + thumbnail.length];
+	    		
+	    		for (int x = 0; x < combined.length; x++)
+	    		{
+	    		    combined[x] = x < thumbnail.length ? thumbnail[x] : tempface[x - thumbnail.length];
+	    		}	
+	    		
+	    		thumbnail = combined;
     			//System.out.println("bytes: " + thumbnail.length);
 	    		}
-    		
-			
+	    			}
+	    		}
 	    		//zeichnet rects ein
 	    		/*
             for (int i = 0; i < facesArray.length; i++)
@@ -155,9 +166,13 @@ public class FaceDetectionAgent implements FaceDetectionService{
                
             
 	     	
-	     
+	    		long endTime = System.currentTimeMillis();
+	    		System.out.println("Dauer second Result: " + (endTime-startTime) + " milliseconds");
 
 	    		fut.setSecondResult(thumbnail);	
+	    		
+	    		
+	    		return fut;
 		} catch (IOException e) {
 			System.out.println("IOException beim umwandeln des byteArray");
 		}	
@@ -171,9 +186,12 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	/*
 	 * face recognition bei lokaler detection
 	 */
-	public Future<byte[]> recognizeFace(byte[] inputFace){
-		byte[] recognizedFace = new byte[0];
+	public Tuple2Future<byte[], Integer> recognizeFace(int id, byte[] inputFace){
 		
+		long startTime = System.currentTimeMillis();
+		
+		byte[] recognizedFace = new byte[0];
+		System.out.println(id);
 		BufferedImage bi;
 		try {
 		bi = ImageIO.read(new ByteArrayInputStream(inputFace));
@@ -196,7 +214,13 @@ public class FaceDetectionAgent implements FaceDetectionService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		return new Future<byte[]>(recognizedFace); 
+		Tuple2Future fut = new Tuple2Future<byte[],Integer>();
+		fut.setFirstResult(recognizedFace);
+		fut.setSecondResult(id);
+		long endTime = System.currentTimeMillis();
+		System.out.println("Dauer Result: " + (endTime-startTime) + " milliseconds");
+		
+		return fut;
 	}
 	
 	
