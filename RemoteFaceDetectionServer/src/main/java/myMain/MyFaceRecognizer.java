@@ -10,8 +10,8 @@ import java.nio.IntBuffer;
 import static org.bytedeco.javacpp.opencv_core.CV_32SC1;
 
 import static org.bytedeco.javacpp.opencv_face.createFisherFaceRecognizer;
-// import static org.bytedeco.javacpp.opencv_face.createEigenFaceRecognizer;
-// import static org.bytedeco.javacpp.opencv_face.createLBPHFaceRecognizer;
+ import static org.bytedeco.javacpp.opencv_face.createEigenFaceRecognizer;
+ import static org.bytedeco.javacpp.opencv_face.createLBPHFaceRecognizer;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 import static org.bytedeco.javacpp.opencv_imgcodecs.CV_LOAD_IMAGE_GRAYSCALE;
 
@@ -61,8 +61,8 @@ public class MyFaceRecognizer {
         }
 
         faceRecognizer = createFisherFaceRecognizer();
-        // FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
-        // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer()
+      // FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
+       // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer(1,8,8,8, 1000);
         System.out.println("start training");
         long startTime = System.currentTimeMillis();
 		

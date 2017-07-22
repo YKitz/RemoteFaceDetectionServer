@@ -1,3 +1,22 @@
+/*
+ *
+ * License
+By downloading, copying, installing or using the software you agree to this license. If you do not agree to this license, do not download, install, copy or use the software.
+
+License Agreement
+For Open Source Computer Vision Library
+(3-clause BSD License)
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+Neither the names of the copyright holders nor the names of the contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+This software is provided by the copyright holders and contributors “as is” and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness 
+for a particular purpose are disclaimed. In no event shall copyright holders or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential damages
+ (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, 
+ whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
+ */
+
 package com.example.yannic.remotefacedetection.agent;
 
 
@@ -72,12 +91,12 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	//gibt den Rahmen um die gesichter und ein erkanntes ähnliches gesicht zurück
 	@Override
 	public Tuple2Future<List<Integer>, byte[]> getFrame(int id, byte[] input) {
-
+		int count = 1;
 
 		long startTime = System.currentTimeMillis();
 		
 		Tuple2Future<List<Integer>, byte[]> fut = new Tuple2Future<List<Integer>, byte[]>();
-		int count = 1;
+		
 		List<Integer> rectData = new ArrayList<Integer>() ;
 		rectData.add(id);
 		byte[] thumbnail = new byte[0];
@@ -85,7 +104,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		int label = 0;
 		try {
 			bi = ImageIO.read(new ByteArrayInputStream(input));
-			ImageIO.write(bi, "jpg", new File("C:\\test\\test.jpg"));
+			//ImageIO.write(bi, "jpg", new File("I:\\test\\test.jpg"));
 			
 
 			
@@ -129,7 +148,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	    		if(facesArray.length>0){
 	    		
 	    			for(int i = 0; i < facesArray.length; i++){
-	    		Rect face = facesArray[0];
+	    		Rect face = facesArray[i];
     			Mat cropImg = new Mat(mat, face);
     			Mat resizedImg = new Mat();
     			Size size = new Size(500,500);
@@ -181,13 +200,13 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		System.out.println("Dauer second Result: " + (endTime-startTime) + " milliseconds");
 		return fut;
 	}	
-	int c=0;
+	
 	
 	/*
 	 * face recognition bei lokaler detection
 	 */
 	public Tuple2Future<byte[], Integer> recognizeFace(int id, byte[] inputFace){
-		
+		int c=0;
 		long startTime = System.currentTimeMillis();
 		
 		byte[] recognizedFace = new byte[0];
