@@ -74,6 +74,10 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		mFaceRecognizer = new MyFaceRecognizer();
 		
 		
+
+		
+		
+		
 		return new Future<Void>();
 	}
 	
@@ -103,8 +107,9 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		BufferedImage bi;
 		int label = 0;
 		try {
+		
 			bi = ImageIO.read(new ByteArrayInputStream(input));
-			//ImageIO.write(bi, "jpg", new File("I:\\test\\test.jpg"));
+			
 			
 
 			
@@ -151,18 +156,18 @@ public class FaceDetectionAgent implements FaceDetectionService{
 	    		Rect face = facesArray[i];
     			Mat cropImg = new Mat(mat, face);
     			Mat resizedImg = new Mat();
-    			Size size = new Size(500,500);
+    			Size size = new Size(92,112);
     			Imgproc.resize(cropImg, resizedImg, size);
     			bi = matToBufferedImage(resizedImg, bi);
-    			ImageIO.write(bi, "jpg", new File("C:\\inputPictures\\" + count +"-test.jpg"));
+    			ImageIO.write(bi, "jpg", new File("C:\\inputPictures\\(" + count +")-test.jpg"));
     			
-    			label = mFaceRecognizer.recognizeFace("C:\\inputPictures\\"+ count +"-test.jpg");
+    			label = mFaceRecognizer.recognizeFace("C:\\inputPictures\\("+ count +")-test.jpg");
     			count++;
 	    		
 	    		//}
 	    		if(label>0){
 	    			
-	    		byte[] tempface = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());	
+	    		byte[] tempface = Files.readAllBytes(new File("C:\\trainingPictures\\(" + label + ")-test.jpg").toPath());	
 	    		byte[] combined = new byte[tempface.length + thumbnail.length];
 	    		
 	    		for (int x = 0; x < combined.length; x++)
@@ -220,7 +225,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		
 		
 		Mat resizedImg = new Mat();
-		Size size = new Size(500,500);
+		Size size = new Size(92,112);
 		Imgproc.resize(input, resizedImg, size);
 		bi = matToBufferedImage(resizedImg, bi);
 		ImageIO.write(bi, "jpg", new File("C:\\inputPicturesFace\\" + c +"-test.jpg"));
@@ -228,7 +233,7 @@ public class FaceDetectionAgent implements FaceDetectionService{
 		int label = mFaceRecognizer.recognizeFace("C:\\inputPicturesFace\\"+ c +"-test.jpg");
 		
 		c++;
-		recognizedFace = Files.readAllBytes(new File("C:\\trainingPictures\\" + label +"-test.jpg").toPath());
+		recognizedFace = Files.readAllBytes(new File("C:\\trainingPictures\\(" + label +")-test.jpg").toPath());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

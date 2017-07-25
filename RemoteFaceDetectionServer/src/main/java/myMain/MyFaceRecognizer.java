@@ -51,7 +51,7 @@ public class MyFaceRecognizer {
         for (File image : imageFiles) {
             Mat img = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
             
-            int label = Integer.parseInt(image.getName().split("\\-")[0]);
+            int label = Integer.parseInt(image.getName().split("\\-")[0].replace("(", "").replace(")", ""));
             System.out.println("Label: " + label);
             images.put(counter, img);
 
