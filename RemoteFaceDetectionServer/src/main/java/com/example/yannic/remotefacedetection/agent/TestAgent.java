@@ -12,32 +12,33 @@ import jadex.micro.annotation.RequiredServices;
 import jadex.bridge.service.RequiredServiceInfo;
 
 @Agent
-@RequiredServices(@RequiredService(name="faceDetectionService", type = FaceDetectionService.class, binding = @Binding(scope = RequiredServiceInfo.SCOPE_GLOBAL)))
+@RequiredServices(@RequiredService(name = "faceDetectionService", type = FaceDetectionService.class, binding = @Binding(scope = RequiredServiceInfo.SCOPE_GLOBAL)))
 public class TestAgent {
 
 	FaceDetectionService fds;
-//	@AgentService
-//	private FaceDetectionService fdi;
-	
-//	@AgentFeature
-//	private IRequiredServicesFeature reqFeat;
-//
-//	
-//	
-//	{
-//		ISumService sum = reqFeat.getRequiredService("sum").get();s
-//	}
-	
-	public void getTest(FaceDetectionService fds){
+	// @AgentService
+	// private FaceDetectionService fdi;
+
+	// @AgentFeature
+	// private IRequiredServicesFeature reqFeat;
+	//
+	//
+	//
+	// {
+	// ISumService sum = reqFeat.getRequiredService("sum").get();s
+	// }
+
+	public void getTest(FaceDetectionService fds) {
 		System.out.println(fds.test());
 	}
-//	
+
+	//
 	@AgentBody
-	public void executeBody(IInternalAccess agent){
-		fds = (FaceDetectionService) agent.getComponentFeature(IRequiredServicesFeature.class).getRequiredService("faceDetectionService").get();
+	public void executeBody(IInternalAccess agent) {
+		fds = (FaceDetectionService) agent.getComponentFeature(IRequiredServicesFeature.class)
+				.getRequiredService("faceDetectionService").get();
 		System.out.println("Test Agent Body");
 		getTest(fds);
 	}
-	
-	
+
 }
